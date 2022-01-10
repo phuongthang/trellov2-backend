@@ -1,6 +1,5 @@
 const express = require('express');
 const morgan = require('morgan');
-const path = require('path');
 const database = require('./Configs/Database');
 const app = express();
 const port = 5000;
@@ -34,10 +33,7 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static('public'))
-app.use(express.static('files'))
-app.use('/static', express.static('public'))
-app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use('*/uploads/users',express.static('public/uploads/users'));
 
 database.connect();
 route(app);

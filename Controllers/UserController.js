@@ -1,6 +1,8 @@
 const { isEmpty } = require('underscore');
 const TypeCode = require('../Constants/typeCode');
 const User = require('../Models/Users');
+const jwt = require('jsonwebtoken');
+const jwtConfig = require('../Configs/Jwt');
 
 class UserController {
 
@@ -56,8 +58,12 @@ class UserController {
 
         User.findOneAndUpdate({ _id: id }, user)
             .then((user) => {
-                res.status(200);
-                res.json({ message: "Cập nhật tài khoản thành công !" });
+                User.findById(id)
+                    .then((user) => {
+                        const token = jwt.sign({ user: user }, jwtConfig.SECRET_KEY , { expiresIn: jwtConfig.EXPIRES_IN });
+                        res.status(200);
+                        res.json({ token : token, message: "Cập nhật tài khoản thành công !" });
+                    })
             })
             .catch(next);
     }
