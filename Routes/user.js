@@ -20,7 +20,6 @@ const storage = multer.diskStorage({
 var upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
-        console.log(file);
         if (file.mimetype == "image") {
             cb(null, true);
         } else {
@@ -36,13 +35,15 @@ router.post('/create',
         { name: 'sub_avatar', maxCount: 1 }
     ]), userController.create);
 
-router.post('/list', userController.list);
+router.get('/list', userController.list);
 
 router.put('/update',
     upload.fields([
         { name: 'avatar', maxCount: 1 },
         { name: 'sub_avatar', maxCount: 1 }
     ]), userController.update);
+
+router.post('/search', userController.search);
 
 router.delete('/delete/:_id', userController.delete);
 

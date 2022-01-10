@@ -11,7 +11,24 @@ class UserController {
      * [GET] /user/list
      */
     list(req, res, next) {
-        User.find({delete_flag: TypeCode.DELETE_FLAG.FALSE})
+        User.find({ delete_flag: TypeCode.DELETE_FLAG.FALSE })
+            .then(users => {
+                if (users) {
+                    res.status(200);
+                    res.json({ users: users, message: "Lấy danh sách nhân viên thành công !" });
+                } else {
+                    res.status(500);
+                    res.json({ message: 'Lấy danh sách nhân viên thất bại. Vui lòng thử lại !' });
+                }
+            })
+            .catch(next);
+    }
+
+    /**
+     * [GET] /user/search
+     */
+    search(req, res, next) {
+        User.find(req.body)
             .then(users => {
                 if (users) {
                     res.status(200);
@@ -47,12 +64,12 @@ class UserController {
      */
     update(req, res, next) {
         const id = req.body._id;
-        let user = {...req.body};
-        if(req.files['avatar']){
+        let user = { ...req.body };
+        if (req.files['avatar']) {
             user.avatar = '/public/uploads/users/' + req.files['avatar'][0].filename;
         }
 
-        if(req.files['sub_avatar']){
+        if (req.files['sub_avatar']) {
             user.sub_avatar = '/public/uploads/users/' + req.files['sub_avatar'][0].filename;
         }
 
@@ -60,9 +77,9 @@ class UserController {
             .then((user) => {
                 User.findById(id)
                     .then((user) => {
-                        const token = jwt.sign({ user: user }, jwtConfig.SECRET_KEY , { expiresIn: jwtConfig.EXPIRES_IN });
+                        const token = jwt.sign({ user: user }, jwtConfig.SECRET_KEY, { expiresIn: jwtConfig.EXPIRES_IN });
                         res.status(200);
-                        res.json({ token : token, message: "Cập nhật tài khoản thành công !" });
+                        res.json({ token: token, message: "Cập nhật tài khoản thành công !" });
                     })
             })
             .catch(next);
@@ -74,7 +91,7 @@ class UserController {
      */
     delete(req, res, next) {
         const id = req.params._id;
-        User.findOneAndUpdate({ _id: id }, {delete_flag: TypeCode.DELETE_FLAG.TRUE})
+        User.findOneAndUpdate({ _id: id }, { delete_flag: TypeCode.DELETE_FLAG.TRUE })
             .then((user) => {
                 res.status(200);
                 res.json({ message: "Xóa tài khoản nhân viên thành công !" });
@@ -95,6 +112,14 @@ class UserController {
             .then(users => {
                 if (isEmpty(users)) {
                     const user = new User(req.body);
+                    if (req.files['avatar']) {
+                        user.avatar = '/public/uploads/users/' + req.files['avatar'][0].filename;
+                    }
+
+                    if (req.files['sub_avatar']) {
+                        user.sub_avatar = '/public/uploads/users/' + req.files['sub_avatar'][0].filename;
+                    }
+
                     user.save((err) => {
                         if (err) {
                             res.status(500);

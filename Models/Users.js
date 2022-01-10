@@ -26,7 +26,7 @@ const userSchema = new Schema({
     sub_avatar: { type: String },
     gender: { type: Number, default: TypeCode.USER.GENDER.MALE},
     workform: { type: Number, default: TypeCode.USER.WORKFORM.FULLTIME},
-    zoom: { type: Number},
+    room: { type: Number},
     position: { type: Number},
     experience: { type: Number},
     address: { type: String, max: Validation.TEXT.MAX_LENGTH },
