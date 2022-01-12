@@ -91,7 +91,7 @@ class UserController {
      */
     delete(req, res, next) {
         const id = req.params._id;
-        User.findOneAndUpdate({ _id: id }, { delete_flag: TypeCode.DELETE_FLAG.TRUE })
+        User.findOneAndDelete({ _id: id })
             .then((user) => {
                 res.status(200);
                 res.json({ message: "Xóa tài khoản nhân viên thành công !" });
