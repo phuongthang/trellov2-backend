@@ -15,7 +15,7 @@ const Schema = mongoose.Schema;
  */
 const userSchema = new Schema({
     email: { type: String, required: true, max: Validation.EMAIL.MAX_LENGTH },
-    password: { type: String, default: "12345678", max: Validation.PASSWORD.MAX_LENGTH, min: Validation.PASSWORD.MIN_LENGTH},
+    password: { type: String, default: "example@Ex123", max: Validation.PASSWORD.MAX_LENGTH, min: Validation.PASSWORD.MIN_LENGTH},
     username: { type: String, max: Validation.TEXT.MAX_LENGTH, required: true },
     fullname: { type: String, max: Validation.TEXT.MAX_LENGTH, required: true },
     birthday: { type: Date },
