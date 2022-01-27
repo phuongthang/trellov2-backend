@@ -12,7 +12,7 @@ class ProjectController {
      * [GET] /user/list
      */
     list(req, res, next) {
-        Project.find({ delete_flag: TypeCode.DELETE_FLAG.FALSE }).populate('members').populate('project_manager')
+        Project.find().populate('members').populate('project_manager')
             .then(projects => {
                 if (projects) {
                     res.status(200);
@@ -26,17 +26,17 @@ class ProjectController {
     }
 
     /**
-     * [GET] /user/search
+     * [GET] /project/search
      */
     search(req, res, next) {
-        User.find(req.body)
-            .then(users => {
-                if (users) {
+        Project.find(req.body).populate('members').populate('project_manager')
+            .then(projects => {
+                if (projects) {
                     res.status(200);
-                    res.json({ users: users, message: "Lấy danh sách nhân viên thành công !" });
+                    res.json({ projects: projects, message: "Lấy danh sách dự án thành công !" });
                 } else {
                     res.status(500);
-                    res.json({ message: 'Lấy danh sách nhân viên thất bại. Vui lòng thử lại !' });
+                    res.json({ message: 'Lấy danh sách dự án thất bại. Vui lòng thử lại !' });
                 }
             })
             .catch(next);
@@ -47,14 +47,14 @@ class ProjectController {
      */
     detail(req, res, next) {
         const id = req.params._id;
-        User.findOne({ _id: id })
-            .then(user => {
-                if (user) {
+        Project.findOne({ _id: id })
+            .then(project => {
+                if (project) {
                     res.status(200);
-                    res.json({ user: user, message: "Lấy thông tin nhân viên thành công !" });
+                    res.json({ project: project, message: "Lấy thông tin dự án thành công !" });
                 } else {
                     res.status(500);
-                    res.json({ message: 'Lấy thông tin nhân viên thất bại. Vui lòng thử lại !' });
+                    res.json({ message: 'Lấy thông tin dự án thất bại. Vui lòng thử lại !' });
                 }
             })
             .catch(next);
@@ -88,14 +88,14 @@ class ProjectController {
 
 
     /**
-     * [DELETE] /user/delete
+     * [DELETE] /project/delete
      */
     delete(req, res, next) {
         const id = req.params._id;
-        User.findOneAndDelete({ _id: id })
-            .then((user) => {
+        Project.findOneAndDelete({ _id: id })
+            .then((project) => {
                 res.status(200);
-                res.json({ message: "Xóa tài khoản nhân viên thành công !" });
+                res.json({ message: "Xóa dự án thành công !" });
             })
             .catch(next);
     }

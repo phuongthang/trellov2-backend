@@ -76,6 +76,16 @@ const typeCode = {
             3: 'QA',
             4: 'Update'
         },
+
+        PROJECT_STATUS: {
+            OPENED: 1,
+            CLOSED: 0
+        },
+
+        PROJECT_STATUS_MAPPING: {
+            'Đang mở': 1,
+            'Đã đóng': 0
+        }
     },
 
     DELETE_FLAG: {
