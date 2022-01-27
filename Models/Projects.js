@@ -22,7 +22,7 @@
      description: { type: String },
      category: { type: Schema.Types.Array },
      status: { type: Schema.Types.Array},
-     member: [{ type: Schema.Types.ObjectId, ref: 'User'}],
+     members: [{ type: Schema.Types.ObjectId, ref: 'User'}],
      created_at: { type: Date, default: Date.now },
      update_at: { type: Date, default: Date.now },
      delete_flag: { type: Number, default: TypeCode.DELETE_FLAG.FALSE }

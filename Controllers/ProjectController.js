@@ -1,6 +1,7 @@
 const { isEmpty } = require('underscore');
 const TypeCode = require('../Constants/typeCode');
 const User = require('../Models/Users');
+const Project = require('../Models/Projects');
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../Configs/Jwt');
 
@@ -11,14 +12,14 @@ class ProjectController {
      * [GET] /user/list
      */
     list(req, res, next) {
-        User.find({ delete_flag: TypeCode.DELETE_FLAG.FALSE })
-            .then(users => {
-                if (users) {
+        Project.find({ delete_flag: TypeCode.DELETE_FLAG.FALSE }).populate('members').populate('project_manager')
+            .then(projects => {
+                if (projects) {
                     res.status(200);
-                    res.json({ users: users, message: "Lấy danh sách nhân viên thành công !" });
+                    res.json({ projects: projects, message: "Lấy danh sách dự án thành công !" });
                 } else {
                     res.status(500);
-                    res.json({ message: 'Lấy danh sách nhân viên thất bại. Vui lòng thử lại !' });
+                    res.json({ message: 'Lấy danh sách dự án thất bại. Vui lòng thử lại !' });
                 }
             })
             .catch(next);
@@ -101,36 +102,30 @@ class ProjectController {
 
 
     /**
-     * [POST] /user/create
+     * [POST] /project/create
      */
     create(req, res, next) {
-        const email = req.body.email;
+        const data = req.body;
+        const project_name = req.body.project_name;
 
-        User.find({
-            'email': email,
+        Project.find({
+            'project_name': project_name,
         })
-            .then(users => {
-                if (isEmpty(users)) {
-                    const user = new User(req.body);
-                    if (req.files['avatar']) {
-                        user.avatar = '/public/uploads/users/' + req.files['avatar'][0].filename;
-                    }
+            .then(projects => {
+                if (isEmpty(projects)) {
+                    const project = new Project(data);
 
-                    if (req.files['sub_avatar']) {
-                        user.sub_avatar = '/public/uploads/users/' + req.files['sub_avatar'][0].filename;
-                    }
-
-                    user.save((err) => {
+                    project.save((err) => {
                         if (err) {
                             res.status(500);
-                            res.json({ message: 'Đăng kí tài khoản thất bại. Vui lòng thử lại !' });
+                            res.json({ message: 'Đăng kí dự án thất bại. Vui lòng thử lại !' });
                         }
                         res.status(200);
-                        res.json({ message: "Đăng kí tài khoản thành công !" });
+                        res.json({ message: "Đăng kí dự án thành công !" });
                     });
                 } else {
                     res.status(500);
-                    res.json({ message: `Tài khoản ${email} đã tồn tại. Vui lòng đăng kí tài khoản khác !` });
+                    res.json({ message: `Dự án ${project_name} đã tồn tại. Vui lòng đăng kí dự án khác !` });
                 }
             })
             .catch(next);
