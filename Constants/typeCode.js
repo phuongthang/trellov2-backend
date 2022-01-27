@@ -85,6 +85,16 @@ const typeCode = {
         PROJECT_STATUS_MAPPING: {
             'Đang mở': 1,
             'Đã đóng': 0
+        },
+        TYPE: {
+            OTHER: 0,
+            OUTSOURCE: 1,
+            PRODUCT: 2
+        },
+        TYPE_MAPPING: {
+            0: 'Khác',
+            1: 'Outsource',
+            2: 'Product'
         }
     },
 

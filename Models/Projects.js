@@ -17,6 +17,7 @@ const projectSchema = new Schema({
     project_name: { type: String, required: true },
     project_start_date: { type: Date },
     project_end_date: { type: Date },
+    type: { type: Number, default: TypeCode.PROJECT.TYPE.OUTSOURCE},
     mode: { type: Number, default: TypeCode.PROJECT.MODE.SECURITY },
     project_status: {type: Number, default: TypeCode.PROJECT.PROJECT_STATUS.OPENED},
     project_manager: { type: Schema.Types.ObjectId, ref: 'User' },
