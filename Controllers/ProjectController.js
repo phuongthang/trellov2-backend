@@ -47,7 +47,7 @@ class ProjectController {
      */
     detail(req, res, next) {
         const id = req.params._id;
-        Project.findOne({ _id: id })
+        Project.findOne({ _id: id }).populate('members')
             .then(project => {
                 if (project) {
                     res.status(200);
@@ -61,27 +61,15 @@ class ProjectController {
     }
 
     /**
-     * [POST] /user/update
+     * [POST] /project/update
      */
     update(req, res, next) {
         const id = req.body._id;
-        let user = { ...req.body };
-        if (req.files['avatar']) {
-            user.avatar = '/public/uploads/users/' + req.files['avatar'][0].filename;
-        }
-
-        if (req.files['sub_avatar']) {
-            user.sub_avatar = '/public/uploads/users/' + req.files['sub_avatar'][0].filename;
-        }
-
-        User.findOneAndUpdate({ _id: id }, user)
-            .then((user) => {
-                User.findById(id)
-                    .then((user) => {
-                        const token = jwt.sign({ user: user }, jwtConfig.SECRET_KEY, { expiresIn: jwtConfig.EXPIRES_IN });
-                        res.status(200);
-                        res.json({ token: token, message: "Cập nhật tài khoản thành công !" });
-                    })
+        let project = { ...req.body };
+        Project.findOneAndUpdate({ _id: id }, project)
+            .then((project) => {
+                res.status(200);
+                res.json({ message: "Cập nhật thông tin dự án thành công !" });
             })
             .catch(next);
     }
