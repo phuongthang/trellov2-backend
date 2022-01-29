@@ -47,7 +47,7 @@ class ProjectController {
      */
     detail(req, res, next) {
         const id = req.params._id;
-        Project.findOne({ _id: id }).populate('members')
+        Project.findOne({ _id: id }).populate('members').populate('project_manager')
             .then(project => {
                 if (project) {
                     res.status(200);

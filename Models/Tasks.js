@@ -20,7 +20,6 @@ const taskSchema = new Schema({
     description: { type: String },
     status: { type: Number },
     parent_task: {type: Schema.Types.ObjectId, ref: 'Task'},
-    sub_task: {type: Schema.Types.ObjectId, ref: 'Task'},
     priority: { type: Number },
     task_start_date: {type: Date},
     task_end_date: {type: Date},

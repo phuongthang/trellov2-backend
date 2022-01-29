@@ -2,6 +2,7 @@ const { isEmpty } = require('underscore');
 const TypeCode = require('../Constants/typeCode');
 const User = require('../Models/Users');
 const Project = require('../Models/Projects');
+const Task = require('../Models/Tasks');
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../Configs/Jwt');
 
@@ -12,14 +13,15 @@ class TaskController {
      * [GET] /user/list
      */
     list(req, res, next) {
-        Project.find().populate('members').populate('project_manager')
-            .then(projects => {
-                if (projects) {
+        const project = req.params._id;
+        Task.find({ project: project })
+            .then(tasks => {
+                if (tasks) {
                     res.status(200);
-                    res.json({ projects: projects, message: "Lấy danh sách dự án thành công !" });
+                    res.json({ tasks: tasks, message: "Lấy danh sách công việc thành công !" });
                 } else {
                     res.status(500);
-                    res.json({ message: 'Lấy danh sách dự án thất bại. Vui lòng thử lại !' });
+                    res.json({ message: 'Lấy danh sách công việc thất bại. Vui lòng thử lại !' });
                 }
             })
             .catch(next);
@@ -94,26 +96,34 @@ class TaskController {
      */
     create(req, res, next) {
         const data = req.body;
-        const project_name = req.body.project_name;
+        const title = req.body.title;
 
-        Project.find({
-            'project_name': project_name,
+        Task.find({
+            'title': title,
         })
-            .then(projects => {
-                if (isEmpty(projects)) {
-                    const project = new Project(data);
+            .then(tasks => {
+                if (isEmpty(tasks)) {
+                    const task = new Task(data);
 
-                    project.save((err) => {
+                    // if (req.files['avatar']) {
+                    //     user.avatar = '/public/uploads/users/' + req.files['avatar'][0].filename;
+                    // }
+
+                    // if (req.files['sub_avatar']) {
+                    //     user.sub_avatar = '/public/uploads/users/' + req.files['sub_avatar'][0].filename;
+                    // }
+
+                    task.save((err) => {
                         if (err) {
                             res.status(500);
-                            res.json({ message: 'Đăng kí dự án thất bại. Vui lòng thử lại !' });
+                            res.json({ message: 'Đăng kí công việc thất bại. Vui lòng thử lại !' });
                         }
                         res.status(200);
-                        res.json({ message: "Đăng kí dự án thành công !" });
+                        res.json({ message: "Đăng kí công việc thành công !" });
                     });
                 } else {
                     res.status(500);
-                    res.json({ message: `Dự án ${project_name} đã tồn tại. Vui lòng đăng kí dự án khác !` });
+                    res.json({ message: `Công việc ${title} đã tồn tại. Vui lòng đăng kí công việc khác !` });
                 }
             })
             .catch(next);
