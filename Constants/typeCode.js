@@ -27,7 +27,7 @@ const typeCode = {
             PUBLIC: 1,
             SECURITY: 2
         },
-    
+
         MODE_MAPPING: {
             0: 'Khác',
             1: 'Công khai',
@@ -58,7 +58,7 @@ const typeCode = {
             7: 'Closed',
             8: 'Reject'
         },
-    
+
         /**
          * Category
          */
@@ -96,6 +96,26 @@ const typeCode = {
             1: 'Outsource',
             2: 'Product'
         }
+    },
+
+    TASK: {
+        /**
+         * priority
+         */
+        PRIORITY: {
+            OTHER: 0,
+            LOW: 1,
+            NORMAL: 2,
+            HIGH: 3,
+            URGENT: 4,
+        },
+        PRIORITY_MAPPING: {
+            0: 'Khác',
+            1: 'Low',
+            2: 'Normal',
+            3: 'High',
+            4: 'Urgent'
+        },
     },
 
     DELETE_FLAG: {
