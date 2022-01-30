@@ -6,6 +6,8 @@ const Task = require('../Models/Tasks');
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../Configs/Jwt');
 
+const mongoose = require('mongoose');
+
 class TaskController {
 
 
@@ -13,8 +15,24 @@ class TaskController {
      * [GET] /user/list
      */
     list(req, res, next) {
-        const project = req.params._id;
-        Task.find({ project: project })
+        Task.find({ project: mongoose.Types.ObjectId(req.params._id) })
+            .then(tasks => {
+                if (tasks) {
+                    res.status(200);
+                    res.json({ tasks: tasks, message: "Lấy danh sách công việc thành công !" });
+                } else {
+                    res.status(500);
+                    res.json({ message: 'Lấy danh sách công việc thất bại. Vui lòng thử lại !' });
+                }
+            })
+            .catch(next);
+    }
+
+    /**
+     * [GET] /user/list
+     */
+    all(req, res, next) {
+        Task.find().populate('project').populate('assign')
             .then(tasks => {
                 if (tasks) {
                     res.status(200);

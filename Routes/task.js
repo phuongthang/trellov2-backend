@@ -7,6 +7,8 @@ router.post('/create', taskController.create);
 
 router.get('/list/:_id', taskController.list);
 
+router.get('/all', taskController.all);
+
 router.put('/update', taskController.update);
 
 router.post('/search', taskController.search);
