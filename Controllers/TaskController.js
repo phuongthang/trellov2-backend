@@ -49,14 +49,23 @@ class TaskController {
      * [GET] /project/search
      */
     search(req, res, next) {
-        Project.find(req.body).populate('members').populate('project_manager')
-            .then(projects => {
-                if (projects) {
+        console.log(req.body)
+        for (const [key, value] of Object.entries(req.body)) {
+            if(key === "project"){
+                req.body.project = mongoose.Types.ObjectId(req.body.project);
+            }
+            if(key === "assign"){
+                req.body.assign = mongoose.Types.ObjectId(req.body.assign);
+            }
+        }
+        Task.find(req.body).populate('project').populate('assign')
+            .then(tasks => {
+                if (tasks) {
                     res.status(200);
-                    res.json({ projects: projects, message: "Lấy danh sách dự án thành công !" });
+                    res.json({ tasks: tasks, message: "Lấy danh sách công việc thành công !" });
                 } else {
                     res.status(500);
-                    res.json({ message: 'Lấy danh sách dự án thất bại. Vui lòng thử lại !' });
+                    res.json({ message: 'Lấy danh sách công việc thất bại. Vui lòng thử lại !' });
                 }
             })
             .catch(next);
