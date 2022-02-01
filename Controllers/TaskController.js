@@ -49,7 +49,6 @@ class TaskController {
      * [GET] /project/search
      */
     search(req, res, next) {
-        console.log(req.body)
         for (const [key, value] of Object.entries(req.body)) {
             if(key === "project"){
                 req.body.project = mongoose.Types.ObjectId(req.body.project);
