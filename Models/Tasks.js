@@ -24,6 +24,7 @@ const taskSchema = new Schema({
     task_start_date: {type: Date},
     task_end_date: {type: Date},
     assign: {type: Schema.Types.ObjectId, ref: 'User'},
+    user_create: {type: Schema.Types.ObjectId, ref: 'User'},
     estimate_time: { type: Number },
     actual_time: { type: Number },
     created_at: { type: Date, default: Date.now },

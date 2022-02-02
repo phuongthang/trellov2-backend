@@ -50,10 +50,10 @@ class TaskController {
      */
     search(req, res, next) {
         for (const [key, value] of Object.entries(req.body)) {
-            if(key === "project"){
+            if (key === "project") {
                 req.body.project = mongoose.Types.ObjectId(req.body.project);
             }
-            if(key === "assign"){
+            if (key === "assign") {
                 req.body.assign = mongoose.Types.ObjectId(req.body.assign);
             }
         }
@@ -75,14 +75,17 @@ class TaskController {
      */
     detail(req, res, next) {
         const id = req.params._id;
-        Project.findOne({ _id: id }).populate('members')
-            .then(project => {
-                if (project) {
+        Task.findOne({ _id: id }).populate({
+            path: 'project',
+            populate: { path: 'project_manager' }
+        }).populate('assign').populate('user_create').populate('parent_task')
+            .then(task => {
+                if (task) {
                     res.status(200);
-                    res.json({ project: project, message: "Lấy thông tin dự án thành công !" });
+                    res.json({data: {task: task},  message: "Lấy thông tin công việc thành công !" });
                 } else {
                     res.status(500);
-                    res.json({ message: 'Lấy thông tin dự án thất bại. Vui lòng thử lại !' });
+                    res.json({ message: 'Lấy thông tin công việc thất bại. Vui lòng thử lại !' });
                 }
             })
             .catch(next);
