@@ -3,7 +3,7 @@ const userRouter = require('./user');
 const projectRouter = require('./project');
 const taskRouter = require('./task');
 const noteRouter = require('./note');
-
+const commentRouter = require('./comment');
 
 
 function route(app){
@@ -11,6 +11,7 @@ function route(app){
     app.use('/api/project', projectRouter);
     app.use('/api/task', taskRouter);
     app.use('/api/note', noteRouter);
+    app.use('/api/comment', commentRouter);
     app.use('/api', authRouter);
 }
 
