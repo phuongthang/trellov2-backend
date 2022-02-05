@@ -85,10 +85,10 @@ class CommentController {
      */
     delete(req, res, next) {
         const id = req.params._id;
-        Note.findOneAndDelete({ _id: id })
+        Comment.findOneAndDelete({ _id: id })
             .then((note) => {
                 res.status(200);
-                res.json({ message: "Xóa ghi chú thành công !" });
+                res.json({ message: "Xóa bình luận thành công !" });
             })
             .catch(next);
     }
