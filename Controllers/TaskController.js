@@ -96,11 +96,11 @@ class TaskController {
      */
     update(req, res, next) {
         const id = req.body._id;
-        let project = { ...req.body };
-        Project.findOneAndUpdate({ _id: id }, project)
-            .then((project) => {
+        let task = { ...req.body };
+        Task.findOneAndUpdate({ _id: id }, task)
+            .then((task) => {
                 res.status(200);
-                res.json({ message: "Cập nhật thông tin dự án thành công !" });
+                res.json({ message: "Cập nhật thông tin công việc thành công !" });
             })
             .catch(next);
     }
