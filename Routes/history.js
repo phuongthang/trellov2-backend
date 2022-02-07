@@ -7,8 +7,8 @@ router.post('/create', historyController.create);
 
 router.get('/list/:_id', historyController.list);
 
-router.put('/update', historyController.update);
+router.get('/search/:_id', historyController.search);
 
-router.delete('/delete/:_id', historyController.delete);
+router.get('/all', historyController.all);
 
 module.exports = router;

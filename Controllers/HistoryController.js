@@ -17,7 +17,39 @@ class HistoryController {
      * [GET] /user/list
      */
     list(req, res, next) {
-        History.find({ task: mongoose.Types.ObjectId(req.params._id) }).populate('old_assign').populate('old_project').populate('user_create').populate('task')
+        History.find({ task: mongoose.Types.ObjectId(req.params._id) })
+            .populate('old_assign')
+            .populate('old_project')
+            .populate('new_assign')
+            .populate('new_project')
+            .populate('user_create')
+            .populate('task')
+            .then(histories => {
+                if (histories) {
+                    res.status(200);
+                    res.json({ histories: histories, message: "Lấy danh sách lịch sử hoạt động thành công !" });
+                } else {
+                    res.status(500);
+                    res.json({ message: 'Lấy danh sách lịch sử hoạt động thất bại. Vui lòng thử lại !' });
+                }
+            })
+            .catch(next);
+    }
+
+    /**
+     * [GET] /project/search
+     */
+    all(req, res, next) {
+        History.find()
+            .populate('old_assign')
+            .populate('old_project')
+            .populate('user_create')
+            .populate('new_assign')
+            .populate('new_project')
+            .populate({
+                path: 'task',
+                populate: { path: 'project' }
+            })
             .then(histories => {
                 if (histories) {
                     res.status(200);
@@ -34,61 +66,24 @@ class HistoryController {
      * [GET] /project/search
      */
     search(req, res, next) {
-        Project.find(req.body).populate('members').populate('project_manager')
-            .then(projects => {
-                if (projects) {
+        History.find({ user_create: mongoose.Types.ObjectId(req.params._id) })
+            .populate('old_assign')
+            .populate('old_project')
+            .populate('user_create')
+            .populate('new_assign')
+            .populate('new_project')
+            .populate({
+                path: 'task',
+                populate: { path: 'project' }
+            })
+            .then(histories => {
+                if (histories) {
                     res.status(200);
-                    res.json({ projects: projects, message: "Lấy danh sách dự án thành công !" });
+                    res.json({ histories: histories, message: "Lấy danh sách lịch sử hoạt động thành công !" });
                 } else {
                     res.status(500);
-                    res.json({ message: 'Lấy danh sách dự án thất bại. Vui lòng thử lại !' });
+                    res.json({ message: 'Lấy danh sách lịch sử hoạt động thất bại. Vui lòng thử lại !' });
                 }
-            })
-            .catch(next);
-    }
-
-    /**
-     * [GET] /user/detail/:_id
-     */
-    detail(req, res, next) {
-        const id = req.params._id;
-        Project.findOne({ _id: id }).populate('members')
-            .then(project => {
-                if (project) {
-                    res.status(200);
-                    res.json({ project: project, message: "Lấy thông tin dự án thành công !" });
-                } else {
-                    res.status(500);
-                    res.json({ message: 'Lấy thông tin dự án thất bại. Vui lòng thử lại !' });
-                }
-            })
-            .catch(next);
-    }
-
-    /**
-     * [POST] /project/update
-     */
-    update(req, res, next) {
-        const id = req.body._id;
-        let project = { ...req.body };
-        Project.findOneAndUpdate({ _id: id }, project)
-            .then((project) => {
-                res.status(200);
-                res.json({ message: "Cập nhật thông tin dự án thành công !" });
-            })
-            .catch(next);
-    }
-
-
-    /**
-     * [DELETE] /project/delete
-     */
-    delete(req, res, next) {
-        const id = req.params._id;
-        Note.findOneAndDelete({ _id: id })
-            .then((note) => {
-                res.status(200);
-                res.json({ message: "Xóa ghi chú thành công !" });
             })
             .catch(next);
     }
