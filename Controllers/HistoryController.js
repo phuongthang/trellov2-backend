@@ -18,8 +18,8 @@ class HistoryController {
      */
     list(req, res, next) {
         History.find({ task: mongoose.Types.ObjectId(req.params._id) })
-            .then(notes => {
-                if (notes) {
+            .then(histories => {
+                if (histories) {
                     res.status(200);
                     res.json({ histories: histories, message: "Lấy danh sách lịch sử hoạt động thành công !" });
                 } else {
