@@ -7,6 +7,8 @@ router.post('/create', commentController.create);
 
 router.get('/list/:_id', commentController.list);
 
+router.get('/all', commentController.getAll);
+
 router.put('/update', commentController.update);
 
 router.post('/search', commentController.search);

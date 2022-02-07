@@ -31,6 +31,23 @@ class CommentController {
     }
 
     /**
+     * [GET] /user/all
+     */
+    getAll(req, res, next) {
+        Comment.find().populate('user_create').populate('user_edit').populate('task')
+            .then(comments => {
+                if (comments) {
+                    res.status(200);
+                    res.json({ comments: comments, message: "Lấy danh sách bình luận thành công !" });
+                } else {
+                    res.status(500);
+                    res.json({ message: 'Lấy danh sách ghi chú thất bại. Vui lòng thử lại !' });
+                }
+            })
+            .catch(next);
+    }
+
+    /**
      * [GET] /project/search
      */
     search(req, res, next) {
