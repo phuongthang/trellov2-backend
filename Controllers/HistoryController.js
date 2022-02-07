@@ -17,7 +17,7 @@ class HistoryController {
      * [GET] /user/list
      */
     list(req, res, next) {
-        History.find({ task: mongoose.Types.ObjectId(req.params._id) })
+        History.find({ task: mongoose.Types.ObjectId(req.params._id) }).populate('old_assign').populate('old_project').populate('user_create').populate('task')
             .then(histories => {
                 if (histories) {
                     res.status(200);
