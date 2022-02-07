@@ -19,7 +19,7 @@ const taskSchema = new Schema({
     title: { type: String },
     description: { type: String },
     status: { type: Number },
-    parent_task: {type: Schema.Types.ObjectId, ref: 'Task'},
+    parent_task: {type: Schema.Types.ObjectId, ref: 'Task', default: new mongoose.Types.ObjectId},
     priority: { type: Number },
     task_start_date: {type: Date},
     task_end_date: {type: Date},
