@@ -17,14 +17,14 @@ class HistoryController {
      * [GET] /user/list
      */
     list(req, res, next) {
-        Note.find({ owner: mongoose.Types.ObjectId(req.params._id) })
+        History.find({ task: mongoose.Types.ObjectId(req.params._id) })
             .then(notes => {
                 if (notes) {
                     res.status(200);
-                    res.json({ notes: notes, message: "Lấy danh sách ghi chú thành công !" });
+                    res.json({ histories: histories, message: "Lấy danh sách lịch sử hoạt động thành công !" });
                 } else {
                     res.status(500);
-                    res.json({ message: 'Lấy danh sách ghi chú thất bại. Vui lòng thử lại !' });
+                    res.json({ message: 'Lấy danh sách lịch sử hoạt động thất bại. Vui lòng thử lại !' });
                 }
             })
             .catch(next);
