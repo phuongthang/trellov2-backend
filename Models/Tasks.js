@@ -27,6 +27,7 @@ const taskSchema = new Schema({
     user_create: {type: Schema.Types.ObjectId, ref: 'User'},
     estimate_time: { type: Number },
     actual_time: { type: Number },
+    files: [{type: String}],
     created_at: { type: Date, default: Date.now },
     update_at: { type: Date, default: Date.now },
     delete_flag: { type: Number, default: TypeCode.DELETE_FLAG.FALSE }

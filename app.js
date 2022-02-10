@@ -34,6 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('*/uploads/users',express.static('public/uploads/users'));
+app.use('*/uploads/tasks',express.static('public/uploads/tasks'));
 
 database.connect();
 route(app);

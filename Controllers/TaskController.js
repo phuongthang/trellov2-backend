@@ -133,14 +133,13 @@ class TaskController {
             .then(tasks => {
                 if (isEmpty(tasks)) {
                     const task = new Task(data);
-
-                    // if (req.files['avatar']) {
-                    //     user.avatar = '/public/uploads/users/' + req.files['avatar'][0].filename;
-                    // }
-
-                    // if (req.files['sub_avatar']) {
-                    //     user.sub_avatar = '/public/uploads/users/' + req.files['sub_avatar'][0].filename;
-                    // }
+                    if (req.files.length) {
+                        const files = [];
+                        for (var i = 0; i < req.files.length; i++) {
+                            files.push('/public/uploads/tasks/' + req.files[i].filename)
+                        }
+                        task.files = files;
+                    }
 
                     task.save((err) => {
                         if (err) {
