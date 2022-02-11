@@ -82,7 +82,7 @@ class TaskController {
             .then(task => {
                 if (task) {
                     res.status(200);
-                    res.json({data: {task: task},  message: "Lấy thông tin công việc thành công !" });
+                    res.json({ data: { task: task }, message: "Lấy thông tin công việc thành công !" });
                 } else {
                     res.status(500);
                     res.json({ message: 'Lấy thông tin công việc thất bại. Vui lòng thử lại !' });
@@ -97,6 +97,13 @@ class TaskController {
     update(req, res, next) {
         const id = req.body._id;
         let task = { ...req.body };
+        if (req.files.length) {
+            const files = [];
+            for (var i = 0; i < req.files.length; i++) {
+                files.push('/public/uploads/tasks/' + req.files[i].filename)
+            }
+            task.files = files;
+        }
         Task.findOneAndUpdate({ _id: id }, task)
             .then((task) => {
                 res.status(200);

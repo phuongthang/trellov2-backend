@@ -35,7 +35,7 @@ router.get('/list/:_id', taskController.list);
 
 router.get('/all', taskController.all);
 
-router.put('/update', taskController.update);
+router.put('/update', upload.array('files', 6), taskController.update);
 
 router.post('/search', taskController.search);
 
