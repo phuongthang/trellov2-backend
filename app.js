@@ -35,6 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('*/uploads/users',express.static('public/uploads/users'));
 app.use('*/uploads/tasks',express.static('public/uploads/tasks'));
+app.use('*/uploads/comments',express.static('public/uploads/comments'));
 
 database.connect();
 route(app);

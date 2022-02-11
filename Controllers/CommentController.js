@@ -117,6 +117,13 @@ class CommentController {
     create(req, res, next) {
         const data = req.body;
         const comment = new Comment(data);
+        if (req.files.length) {
+            const files = [];
+            for (var i = 0; i < req.files.length; i++) {
+                files.push('/public/uploads/comments/' + req.files[i].filename)
+            }
+            comment.files = files;
+        }
 
         comment.save((err) => {
             if (err) {

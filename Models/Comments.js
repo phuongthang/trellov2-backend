@@ -18,6 +18,7 @@ const commentSchema = new Schema({
     comment: { type: String, required: true },
     user_create: { type: Schema.Types.ObjectId, ref: 'User' },
     user_edit: { type: Schema.Types.ObjectId, ref: 'User' },
+    files: [{type: String}],
     created_at: { type: Date, default: Date.now },
     update_at: { type: Date, default: Date.now },
     delete_flag: { type: Number, default: TypeCode.DELETE_FLAG.FALSE }
