@@ -8,14 +8,18 @@ const TypeCode = require('../Constants/typeCode');
  * packet
  */
 const mongoose = require('mongoose');
+const bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
+
+const salt = bcrypt.genSaltSync(10);
+const hash = bcrypt.hashSync("example@Ex123", salt);
 
 /**
  * define schema
  */
 const userSchema = new Schema({
     email: { type: String, required: true, max: Validation.EMAIL.MAX_LENGTH },
-    password: { type: String, default: "example@Ex123", max: Validation.PASSWORD.MAX_LENGTH, min: Validation.PASSWORD.MIN_LENGTH},
+    password: { type: String, default: hash, max: Validation.PASSWORD.MAX_LENGTH, min: Validation.PASSWORD.MIN_LENGTH},
     username: { type: String, max: Validation.TEXT.MAX_LENGTH, required: true },
     fullname: { type: String, max: Validation.TEXT.MAX_LENGTH, required: true },
     birthday: { type: Date },

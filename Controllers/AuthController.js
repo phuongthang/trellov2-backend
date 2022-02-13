@@ -2,6 +2,7 @@ const { isEmpty } = require('underscore');
 const User = require('../Models/Users');
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../Configs/Jwt');
+const bcrypt = require("bcrypt");
 
 class AuthController {
     /**
@@ -13,15 +14,20 @@ class AuthController {
 
         User.findOne({
             'email': email,
-            'password': password
         }).then(user => {
             if (isEmpty(user)) {
                 res.status(401);
                 res.send('Thông tin tài khoản hoặc mật khẩu không chính xác');
             } else {
-                const token = jwt.sign({ user: user }, jwtConfig.SECRET_KEY , { expiresIn: jwtConfig.EXPIRES_IN });
-                res.status(200);
-                res.json({'token': token});
+                const validPassword = bcrypt.compare(password, user.password);
+                if (validPassword) {
+                    const token = jwt.sign({ user: user }, jwtConfig.SECRET_KEY, { expiresIn: jwtConfig.EXPIRES_IN });
+                    res.status(200);
+                    res.json({ 'token': token });
+                } else {
+                    res.status(401);
+                    res.send('Thông tin tài khoản hoặc mật khẩu không chính xác');
+                }
             }
         }).catch(next);
     }
