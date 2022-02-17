@@ -7,4 +7,6 @@ router.post('/login', authController.login);
 
 router.put('/change-password', authController.change);
 
+router.delete('/reset-password/:_id', authController.reset);
+
 module.exports = router;

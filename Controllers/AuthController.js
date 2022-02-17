@@ -66,6 +66,34 @@ class AuthController {
             })
             .catch(next);
     }
+
+
+    /**
+     * [POST] /user/update
+     */
+    reset(req, res, next) {
+        const id = req.params._id;
+        const salt = bcrypt.genSaltSync(10);
+
+        User.findById(id)
+            .then((user) => {
+                if (user) {
+                    user.password = bcrypt.hashSync("example@Ex123", salt);
+                    user.save((err) => {
+                        if (err) {
+                            res.status(500);
+                            res.json({ message: 'Thiết lập lại mật khẩu thất bại. Vui lòng thử lại !' });
+                        }
+                        res.status(200);
+                        res.json({ message: "Thiết lập lại mật khẩu thành công !" });
+                    });
+                } else {
+                    res.status(500);
+                    res.json({ message: 'Thiết lập lại mật khẩu thất bại. Vui lòng thử lại !' });
+                }
+            })
+            .catch(next);
+    }
 }
 
 module.exports = new AuthController;
